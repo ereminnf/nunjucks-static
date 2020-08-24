@@ -1,0 +1,28 @@
+{
+    "name": "nunjucks-template-loader",
+    "version": "0.1.0",
+    "description": "Nunjucks loader for Webpack.",
+    "npmName": "nunjucks-html-loader",
+    "keywords": [
+        "webpack",
+        "nunjucks",
+        "template",
+        "html"
+    ],
+    "author": "Nickolay Eryomin - https://github.com/truerk",
+    "license": "MIT",
+    "homepage": "https://github.com/truerk/nunjucks-template-loader",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/truerk/nunjucks-template-loader.git"
+    },
+    "bugs": {
+        "url": "https://github.com/truerk/nunjucks-template-loader/issues"
+    },
+    "main": "index.js",
+    "dependencies": {
+        "loader-utils": "^2.0.0",
+        "nunjucks": "^3.0.0"
+    },
+    "devDependencies": {}
+}
