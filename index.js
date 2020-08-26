@@ -48,20 +48,27 @@ module.exports = function(content) {
 	this.cacheable();
 
 	const callback = this.async();
-	const opt = utils.getOptions(this.query);
+	const opt = utils.getOptions(this);
 
-	const nunjucksSearchPaths = opt.searchPaths;
-	const nunjucksContext = opt.context;
+    // options
+	const paths = opt.paths;
+    const data = opt.data;
+    const filters = opt.filters;
 
-	const loader = new NunjucksLoader(nunjucksSearchPaths, function(path) {
+	const loader = new NunjucksLoader(paths, function(path) {
 		this.addDependency(path);
 	}.bind(this));
 
-	const nunjEnv = new nunjucks.Environment(loader);
-	nunjucks.configure(null, { watch: false });
-
-	const template = nunjucks.compile(content, nunjEnv);
-	const html = template.render(nunjucksContext);
+	const env = new nunjucks.Environment(loader);
+    nunjucks.configure(null, { watch: false });
+    
+    // filters
+    for (const key in filters) {     
+        env.addFilter(key, filters[key]);
+    }    
+    
+	const template = nunjucks.compile(content, env);
+	const html = template.render(data);
 
 	callback(null, html);
 };
