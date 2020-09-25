@@ -22,21 +22,31 @@ Webpack loader for nunjucks
 ``npm i nunjucks-template-loader --save-dev``
 
 ### webpack
-
+Generating folders for the nunjucks view
+```js
+function returnEntries(globPath){
+    let entries = glob_entries(globPath, true);
+    let folderList = new Array();
+    for (let folder in entries){
+       folderList.push(entries[folder]);
+    }
+    return folderList;
+}
+```
 ```js
 {
-                test: /\.html$|njk|nunjucks/,
-                exclude: [/(node_modules)/, /(src)/],
-                use: [
-                    'html-loader',
-                    {
-                        loader: 'nunjucks-template-loader',
-                        options: {
-                            paths: [...returnEntries(path.resolve(__dirname, '../templates/**/'))],                           
-                        }
-                    }
-                ]
+    test: /\.html$|njk|nunjucks/,
+    exclude: [/(node_modules)/, /(src)/],
+    use: [
+        'html-loader',
+        {
+            loader: 'nunjucks-template-loader',
+            options: {
+                paths: [...returnEntries(path.resolve(__dirname, './templates/**/'))],                           
             }
+        }
+    ]
+}
 ```
 
 ### options data
