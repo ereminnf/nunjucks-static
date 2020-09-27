@@ -21,8 +21,10 @@
     },
     "main": "index.js",
     "dependencies": {
+        "html-webpack-plugin": "^4.5.0",
         "loader-utils": "^2.0.0",
-        "nunjucks": "^3.0.0"
+        "nunjucks": "^3.0.0",
+        "webpack-glob-folder-entries": "^1.0.0"
     },
     "devDependencies": {}
 }
