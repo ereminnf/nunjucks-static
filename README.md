@@ -92,3 +92,41 @@ options: {
 	}
 }
 ```
+### default layout
+**structure**
+```
+app
+├── ...
+├── templates
+│     ├── pages
+│     │     ├── index
+│     │     │     └── index.njk
+│     │     └── about
+│     │            └── about.njk
+│     └── layout.njk
+└── ...
+```
+
+**layout**
+```markup
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body>
+    <div id="app">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+```
+
+**pages**
+```markup
+{% extends "layout.njk" %}
+
+{% block content %}
+   <div class="content">
+        <p>index pages</p>
+   </div>
+{% endblock %}
+```
