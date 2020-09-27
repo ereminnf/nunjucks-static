@@ -1,6 +1,6 @@
 {
     "name": "nunjucks-template-loader",
-    "version": "0.2.2",
+    "version": "1.0.0",
     "description": "Nunjucks loader for Webpack.",
     "npmName": "nunjucks-template-loader",
     "keywords": [
