@@ -20,35 +20,51 @@ Webpack loader for nunjucks
 
 ### npm
 ```js
-npm i nunjucks-template-loader --save-dev
+npm i nunjucks-template-loader -D
 ```
 
 ### webpack
-Generating folders for the nunjucks view
+**common paths**
 ```js
-function returnEntries(globPath){
-    let entries = glob_entries(globPath, true);
-    let folderList = new Array();
-    for (let folder in entries){
-       folderList.push(entries[folder]);
-    }
-    return folderList;
-}
+const templateBlobPath = path.resolve(__dirname, './templates/**/')
+const pagesBlobPath = path.resolve(__dirname, './templates/pages/**/')
+const pagesPath = path.resolve(__dirname, './templates/pages')
+```
+
+**test module**
+import default filters or use your own
+```js
+const nunjucksFilters = require('nunjucks-template-loader/filters');
 ```
 ```js
 {
-    test: /\.html$|njk|nunjucks/,
-    exclude: [/(node_modules)/, /(src)/],
-    use: [
-        'html-loader',
-        {
-            loader: 'nunjucks-template-loader',
-            options: {
-                paths: [...returnEntries(path.resolve(__dirname, './templates/**/'))],
-            }
-        }
-    ]
+	test: /\.html$|njk|nunjucks/,
+	exclude: [/(node_modules)/, /(src)/],
+	use: [
+		'html-loader',
+		{
+			loader: 'nunjucks-template-loader',
+			options: {
+				paths: templateBlobPath,
+				filters: nunjucksFilters,
+				data: {
+					index: {
+						foo: 'indexBar'
+					}
+				}
+			}
+		}
+	]
 }
+```
+**plugins**
+```js
+const generateNunjucksHtml  = require('nunjucks-template-loader/utils/generateNunjucksHtml');
+```
+```js
+plugins : [
+...
+].concat(generateNunjucksHtml(pagesBlobPath, pagesPath))
 ```
 
 ### options data
