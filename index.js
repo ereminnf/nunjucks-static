@@ -1,7 +1,17 @@
-const fs = require('fs');
-const path = require('path');
-const utils = require('loader-utils');
-const nunjucks = require('nunjucks');
+/*
+ * Nunjucks-template-laoder
+ * Webpach loader for nunjucks
+ * https://github.com/truerk/nunjucks-template-laoder
+ *
+ * Copyright 2020 Eryomin Nickolay
+ * Published under MIT License
+ */
+
+const fs                     = require('fs');
+const path                   = require('path');
+const utils                  = require('loader-utils');
+const nunjucks               = require('nunjucks');
+const generateFolderList     = require('./utils/generateFolderList');
 
 const NunjucksLoader = nunjucks.Loader.extend({
     init: function(searchPaths, sourceFoundCallback) {
@@ -51,9 +61,11 @@ module.exports = function(content) {
 	const opt = utils.getOptions(this);
 
     // options
-	const paths = opt.paths;
-    const data = opt.data;
-    const filters = opt.filters;
+	let paths = opt.paths;
+    let data = opt.data;
+    let filters = opt.filters;
+
+    paths = generateFolderList(paths);
 
 	const loader = new NunjucksLoader(paths, function(path) {
 		this.addDependency(path);
@@ -61,12 +73,12 @@ module.exports = function(content) {
 
 	const env = new nunjucks.Environment(loader);
     nunjucks.configure(null, { watch: false });
-    
+
     // filters
-    for (const key in filters) {     
+    for (const key in filters) {
         env.addFilter(key, filters[key]);
-    }    
-    
+    }
+
 	const template = nunjucks.compile(content, env);
 	const html = template.render(data);
 

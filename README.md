@@ -19,7 +19,9 @@ Webpack loader for nunjucks
 ## Installation and usage
 
 ### npm
-``npm i nunjucks-template-loader --save-dev``
+```js
+npm i nunjucks-template-loader --save-dev
+```
 
 ### webpack
 Generating folders for the nunjucks view
@@ -42,7 +44,7 @@ function returnEntries(globPath){
         {
             loader: 'nunjucks-template-loader',
             options: {
-                paths: [...returnEntries(path.resolve(__dirname, './templates/**/'))],                           
+                paths: [...returnEntries(path.resolve(__dirname, './templates/**/'))],
             }
         }
     ]
