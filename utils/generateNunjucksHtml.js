@@ -38,8 +38,8 @@ function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin) {
             return new HtmlWebpackPlugin({
                 template: `${pagesPath}/${page}/${name}.${extension}`,
                 filename: `./${page}.html`,
-                inject: optionsHmlPlugin && optionsHmlPlugin.inject ? optionsHmlPlugin.inject : true,
-                minify: optionsHmlPlugin && optionsHmlPlugin.minify ? optionsHmlPlugin.minify : true,
+                inject: optionsHmlPlugin && optionsHmlPlugin.inject || optionsHmlPlugin.inject === false ? optionsHmlPlugin.inject : true,
+                minify: optionsHmlPlugin && optionsHmlPlugin.minify || optionsHmlPlugin.minify === false ? optionsHmlPlugin.minify : true,
                 chunks: optionsHmlPlugin && optionsHmlPlugin.chunks ? optionsHmlPlugin.chunks : chunks,
             });
         } else {
