@@ -6,9 +6,10 @@ const HtmlWebpackPlugin  = require("html-webpack-plugin");
  * Generate Nunjucks template to HTML
  * @param {String} pagesBlobPath path.resolve(__dirname, './templates/** /')
  * @param {String} pagesPath path.resolve(__dirname, './templates/pages')
+ * @param {String} optionsHmlPlugin  HtmlWebpackPlugin options
  * @returns {Array} array with HtmlWebpackPlugin
  */
-function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin) {
+function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin = {}) {
     let entries = glob_entries(pagesBlobPath, true);
     let pagesList = new Array();
 
@@ -24,6 +25,16 @@ function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin) {
 
         chunks.push(page);
 
+        // add chunks for entry point
+        if (optionsHmlPlugin.chunks) {
+            for (const pageChunk in optionsHmlPlugin.chunks) {
+                if (page === pageChunk) {
+                    chunks = chunks.concat(optionsHmlPlugin.chunks[pageChunk]);
+                    console.log(chunks);
+                }
+            }
+        }
+
         if (fs.existsSync(`${pagesPath}/${page}/${page}.njk`)) {
             parts = `${page}.njk`.split(".");
             name = parts[0];
@@ -38,9 +49,9 @@ function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin) {
             return new HtmlWebpackPlugin({
                 template: `${pagesPath}/${page}/${name}.${extension}`,
                 filename: `./${page}.html`,
-                inject: optionsHmlPlugin && optionsHmlPlugin.inject || optionsHmlPlugin.inject === false ? optionsHmlPlugin.inject : true,
-                minify: optionsHmlPlugin && optionsHmlPlugin.minify || optionsHmlPlugin.minify === false ? optionsHmlPlugin.minify : true,
-                chunks: optionsHmlPlugin && optionsHmlPlugin.chunks && optionsHmlPlugin.chunks.length > 0 ? optionsHmlPlugin.chunks : chunks,
+                inject: optionsHmlPlugin.inject || optionsHmlPlugin.inject === false ? optionsHmlPlugin.inject : false,
+                minify: optionsHmlPlugin.minify || optionsHmlPlugin.minify === false ? optionsHmlPlugin.minify : true,
+                chunks: chunks,
             });
         } else {
             return null;
