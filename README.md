@@ -45,64 +45,69 @@ pagesPath - path to your page templates
 
 ```js
 module.exports = {
-	module: {
-		rules: [
-			{
-				test: /\.html$|njk|nunjucks/,
-				exclude: [/(node_modules)/, /(src)/],
-				use: [
-					'html-loader',
-					{
-						loader: 'nunjucks-template-loader',
-						options: {
-							paths: templateGlobPath
-						}
-					}
-				]
-			}
-		]
-	},
-	plugins: [
-		...
-	].concat(generateNunjucksHtml(pagesGlobPath, pagesPath, {
-		...
-		// html-webpack-plugin options (minify, inject, chunks)
-	}))
+   module: {
+      rules: [
+         {
+            test: /\.html$|njk|nunjucks/,
+            exclude: [/(node_modules)/, /(src)/],
+            use: [
+               'html-loader',
+               {
+                  loader: 'nunjucks-template-loader',
+                  options: {
+                     paths: templateGlobPath
+                  }
+               }
+            ]
+         }
+      ]
+   },
+   plugins: [
+      ...
+   ].concat(generateNunjucksHtml(pagesGlobPath, pagesPath, {
+      ...
+      // html-webpack-plugin options (minify, inject, chunks)
+   }))
 }
 ```
 
 **with data and filters**
 ```js
 function shorten(value, count) {
-    return value.slice(0, count || 5);
+   return value.slice(0, count || 5);
 }
 
 module.exports = {
-	module: {
-		rules: [
-			{
-				test: /\.html$|njk|nunjucks/,
-				exclude: [/(node_modules)/, /(src)/],
-				use: [
-					'html-loader',
-					{
-						loader: 'nunjucks-template-loader',
-						options: {
-							paths: templateGlobPath,
-							data: {
-								title: 'projectTitle',
-								foo: 'indexBar'
-							},
-							filters: {
-								shorten
-							}
-						}
-					}
-				]
-			}
-		]
-	},
-	plugins: [].concat(generateNunjucksHtml(pagesGlobPath, pagesPath))
+   module: {
+      rules: [
+         {
+            test: /\.html$|njk|nunjucks/,
+            exclude: [/(node_modules)/, /(src)/],
+            use: [
+               'html-loader',
+               {
+                  loader: 'nunjucks-template-loader',
+                  options: {
+                     paths: templateGlobPath,
+		     data: {
+		        title: 'projectTitle',
+		        foo: 'indexBar'
+                     },
+		     filters: {
+		        shorten
+		     }
+                  }
+               }
+            ]
+         }
+      ]
+   },
+   plugins: [
+      ...
+   ].concat(generateNunjucksHtml(pagesGlobPath, pagesPath, {
+      ...
+      // html-webpack-plugin options (minify, inject, chunks)
+   }))
 }
 ```
 
