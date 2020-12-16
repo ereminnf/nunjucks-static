@@ -28,8 +28,6 @@ starter kit: https://github.com/truerk/starter-kit-nunjucks
 
 **webpack.config.js**
 
-import default filters or use your own
-
 ```js
 const generateNunjucksHtml  = require('nunjucks-template-loader/utils/generateNunjucksHtml');
 const nunjucksFilters = require('nunjucks-template-loader/filters');
