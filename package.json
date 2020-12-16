@@ -1,12 +1,18 @@
 {
     "name": "nunjucks-template-loader",
     "version": "1.0.8",
-    "description": "Nunjucks loader for Webpack.",
+    "description": "Webpack loader for Nunjucks.",
     "npmName": "nunjucks-template-loader",
     "keywords": [
         "webpack",
+        "gulp",
         "nunjucks",
         "template",
+        "loader",
+        "html-webpack-plugin",
+        "static",
+        "static site",
+        "generator",
         "html"
     ],
     "author": "Nickolay Eryomin - https://github.com/truerk",

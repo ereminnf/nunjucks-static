@@ -30,7 +30,6 @@ function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin = {}) {
             for (const pageChunk in optionsHmlPlugin.chunks) {
                 if (page === pageChunk) {
                     chunks = chunks.concat(optionsHmlPlugin.chunks[pageChunk]);
-                    console.log(chunks);
                 }
             }
         }

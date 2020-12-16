@@ -12,110 +12,133 @@
 
 # Nunjucks loader [![NPM version][npm-image]][npm-url] [![GitHub license][license-image]][license-url] [![NPM size][size-image]][size-url]
 
-[![][logo-image]][logo-url]
-
 Webpack loader for nunjucks
 
-## Installation and usage
+## Install
 
-### npm
 ```js
-npm i nunjucks-template-loader -D
+npm i nunjucks-template-loader
 ```
 
-### webpack
-**common paths**
+## Usage
+
+used with webpack-glob-folder-entries and html-webpack-plugin
+
+starter kit: https://github.com/truerk/starter-kit-nunjucks
+
+** webpack.config.js **
+
+import default filters or use your own
+
 ```js
-const templateBlobPath = path.resolve(__dirname, './templates/**/')
-const pagesBlobPath = path.resolve(__dirname, './templates/pages/**/')
+const generateNunjucksHtml  = require('nunjucks-template-loader/utils/generateNunjucksHtml');
+const nunjucksFilters = require('nunjucks-template-loader/filters');
+const templateGlobPath = path.resolve(__dirname, './templates/**/')
+const pagesGlobPath = path.resolve(__dirname, './templates/pages/**/')
 const pagesPath = path.resolve(__dirname, './templates/pages')
 ```
 
-**test module**
-import default filters or use your own
+generateNunjucksHtml - generating html file using HTML Webpack Plugin
+nunjucksFilters - object with example filters (you can use your filters)
+templateGlobPath - glob path to your templates
+pagesGlobPath - glob path to your page templates
+pagesPath - path to your page templates
+
+
 ```js
-const nunjucksFilters = require('nunjucks-template-loader/filters');
-```
-```js
-{
-	test: /\.html$|njk|nunjucks/,
-	exclude: [/(node_modules)/, /(src)/],
-	use: [
-		'html-loader',
-		{
-			loader: 'nunjucks-template-loader',
-			options: {
-				paths: templateBlobPath,
-				filters: nunjucksFilters,
-				data: {
-					index: {
-						foo: 'indexBar'
+module.exports = {
+	module: {
+		rules: [
+			{
+				test: /\.html$|njk|nunjucks/,
+				exclude: [/(node_modules)/, /(src)/],
+				use: [
+					'html-loader',
+					{
+						loader: 'nunjucks-template-loader',
+						options: {
+							paths: templateGlobPath
+						}
 					}
-				}
+				]
 			}
-		}
-	]
-}
-```
-**plugins**
-```js
-const generateNunjucksHtml  = require('nunjucks-template-loader/utils/generateNunjucksHtml');
-```
-```js
-plugins : [
-...
-].concat(generateNunjucksHtml(pagesBlobPath, pagesPath))
-```
-
-### options data
-
-```js
-options: {
-	...
-	data: {
-		foo: 'indexBar'
-	}
+		]
+	},
+	plugins: [
+		...
+	].concat(generateNunjucksHtml(pagesGlobPath, pagesPath, {
+		...
+		// html-webpack-plugin options (minify, inject, chunks)
+	}))
 }
 ```
 
-### options filters
-
+** with data and filters **
 ```js
 function shorten(value, count) {
     return value.slice(0, count || 5);
 }
 
-options: {
-	...
-	filters: {
-		shorten
-	}
+module.exports = {
+	module: {
+		rules: [
+			{
+				test: /\.html$|njk|nunjucks/,
+				exclude: [/(node_modules)/, /(src)/],
+				use: [
+					'html-loader',
+					{
+						loader: 'nunjucks-template-loader',
+						options: {
+							paths: templateGlobPath,
+							data: {
+								title: 'projectTitle',
+								foo: 'indexBar'
+							},
+							filters: {
+								shorten
+							}
+						}
+					}
+				]
+			}
+		]
+	},
+	plugins: [].concat(generateNunjucksHtml(pagesGlobPath, pagesPath))
 }
 ```
-### default layout
-**structure**
+
+** example project structure **
 ```
 app
 ├── ...
-├── templates
-│     ├── pages
-│     │     ├── index
+├── templates/
+│     ├── components/
+│     │     ├── header.njk
+│     │     └── footer.njk
+│     ├── pages/
+│     │     ├── index/
 │     │     │     └── index.njk
-│     │     └── about
-│     │            └── about.njk
+│     │     └── about/
+│     │            └── index.njk
 │     └── layout.njk
 └── ...
 ```
-
-**layout**
+** layout.njk **
 ```markup
 <!DOCTYPE html>
 <html lang="en">
-<head></head>
+<head>{{ title }}</head>
 <body>
+
+    {% include "components/header.njk" %}
+
     <div id="app">
         {% block content %}{% endblock %}
     </div>
+
+    {% include "components/footer.njk" %}
+
 </body>
 </html>
 ```
@@ -126,7 +149,8 @@ app
 
 {% block content %}
    <div class="content">
-        <p>index pages</p>
+        <p>shorten filters example:</p>
+        <div>{{ foo | shorten(3) }}</div>
    </div>
 {% endblock %}
 ```
