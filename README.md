@@ -37,9 +37,13 @@ const pagesPath = path.resolve(__dirname, './templates/pages')
 ```
 
 generateNunjucksHtml - generating html file using HTML Webpack Plugin
+
 nunjucksFilters - object with example filters (you can use your filters)
+
 templateGlobPath - glob path to your templates
+
 pagesGlobPath - glob path to your page templates
+
 pagesPath - path to your page templates
 
 
