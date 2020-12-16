@@ -26,7 +26,7 @@ used with webpack-glob-folder-entries and html-webpack-plugin
 
 starter kit: https://github.com/truerk/starter-kit-nunjucks
 
-** webpack.config.js **
+**webpack.config.js**
 
 import default filters or use your own
 
@@ -73,7 +73,7 @@ module.exports = {
 }
 ```
 
-** with data and filters **
+**with data and filters**
 ```js
 function shorten(value, count) {
     return value.slice(0, count || 5);
@@ -108,7 +108,7 @@ module.exports = {
 }
 ```
 
-** example project structure **
+**example project structure**
 ```
 app
 ├── ...
@@ -124,7 +124,7 @@ app
 │     └── layout.njk
 └── ...
 ```
-** layout.njk **
+**layout.njk**
 ```markup
 <!DOCTYPE html>
 <html lang="en">
