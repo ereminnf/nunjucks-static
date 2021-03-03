@@ -47,7 +47,7 @@ function generateNunjucksHtml(pagesBlobPath, pagesPath, optionsHmlPlugin = {}) {
         if (fs.existsSync(`${pagesPath}/${page}/${name}.${extension}`)) {
             return new HtmlWebpackPlugin({
                 template: `${pagesPath}/${page}/${name}.${extension}`,
-                filename: `./${page}.html`,
+                filename: `${optionsHmlPlugin.filepath || './'}${page}.html`,
                 inject: optionsHmlPlugin.inject || optionsHmlPlugin.inject === false ? optionsHmlPlugin.inject : false,
                 minify: optionsHmlPlugin.minify || optionsHmlPlugin.minify === false ? optionsHmlPlugin.minify : true,
                 chunks: chunks,
