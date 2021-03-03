@@ -7,80 +7,35 @@
  * Published under MIT License
  */
 
-const fs                     = require('fs');
-const path                   = require('path');
-const utils                  = require('loader-utils');
-const nunjucks               = require('nunjucks');
-const generateFolderList     = require('./utils/generateFolderList');
 
-const NunjucksLoader = nunjucks.Loader.extend({
-    init: function(searchPaths, sourceFoundCallback) {
-    	this.sourceFoundCallback = sourceFoundCallback;
-        if(searchPaths) {
-            searchPaths = Array.isArray(searchPaths) ? searchPaths : [searchPaths];
+const utils = require('loader-utils');
+const nunjucks = require('nunjucks');
 
-            this.searchPaths = searchPaths.map(path.normalize);
-        }
-        else {
-            this.searchPaths = ['.'];
-        }
-    },
 
-    getSource: function(name) {
-    	let fullpath = null;
-        let paths = this.searchPaths;
-
-        for(let i=0; i<paths.length; i++) {
-            let basePath = path.resolve(paths[i]);
-            let p = path.resolve(paths[i], name);
-
-            if(p.indexOf(basePath) === 0 && fs.existsSync(p)) {
-                fullpath = p;
-                break;
-            }
-        }
-
-        if(!fullpath) {
-            return null;
-        }
-
-        this.sourceFoundCallback(fullpath);
-
-        return {
-			src: fs.readFileSync(fullpath, 'utf-8'),
-			path: fullpath,
-			noCache: this.noCache
-		};
-    }
-});
-
-module.exports = function(content) {
+module.exports = function(template) {
 	this.cacheable();
 
+    // loaders
 	const callback = this.async();
-	const opt = utils.getOptions(this);
+	const options = utils.getOptions(this);
 
     // options
-	let paths = opt.paths;
-    let data = opt.data;
-    let filters = opt.filters;
+	let path = options.path;
+    let data = options.data;
+    let filters = options.filters;
 
-    paths = generateFolderList(paths);
-
-	const loader = new NunjucksLoader(paths, function(path) {
-		this.addDependency(path);
-	}.bind(this));
-
-	const env = new nunjucks.Environment(loader);
-    nunjucks.configure(null, { watch: false });
+    const njk = nunjucks.configure(path, {
+        autoescape: true,
+        noCache: true,
+        watch: false
+    });
 
     // filters
     for (const key in filters) {
-        env.addFilter(key, filters[key]);
+        njk.addFilter(key, filters[key]);
     }
 
-	const template = nunjucks.compile(content, env);
-	const html = template.render(data);
+    const html = njk.renderString(template, data)
 
 	callback(null, html);
 };
