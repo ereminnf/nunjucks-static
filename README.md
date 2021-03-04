@@ -12,66 +12,59 @@
 
 # Nunjucks loader [![NPM version][npm-image]][npm-url] [![GitHub license][license-image]][license-url] [![NPM size][size-image]][size-url]
 
-Webpack loader for nunjucks
+Webpack loader for Nunjucks
 
 ## Install
 
 ```js
-npm i nunjucks-template-loader
+npm i --save-dev nunjucks-template-loader
 ```
 
 ## Usage
 
-used with webpack-glob-folder-entries and html-webpack-plugin
+used with html-loader and html-webpack-plugin
 
 starter kit: https://github.com/truerk/starter-kit-nunjucks
 
 **webpack.config.js**
 
 ```js
-const generateNunjucksHtml  = require('nunjucks-template-loader/utils/generateNunjucksHtml');
-const nunjucksFilters = require('nunjucks-template-loader/filters');
-const templateGlobPath = path.resolve(__dirname, './templates/**/')
-const pagesGlobPath = path.resolve(__dirname, './templates/pages/**/')
-const pagesPath = path.resolve(__dirname, './templates/pages')
+const generateHtmlPlugin = require('nunjucks-template-loader/utils/generateHtmlPlugin');
+const templatesPath = path.join(__dirname, 'templates');
+const pagesPath = path.join(templatesPath, 'pages');
 ```
 
 generateNunjucksHtml - generating html file using HTML Webpack Plugin
-
-nunjucksFilters - object with example filters (you can use your filters)
-
-templateGlobPath - glob path to your templates
-
-pagesGlobPath - glob path to your page templates
-
+templatesPath - path to your templates
 pagesPath - path to your page templates
-
 
 ```js
 module.exports = {
-   module: {
-      rules: [
-         {
-            test: /\.html$|njk|nunjucks/,
-            exclude: [/(node_modules)/, /(src)/],
-            use: [
-               'html-loader',
-               {
-                  loader: 'nunjucks-template-loader',
-                  options: {
-                     paths: templateGlobPath
-                  }
-               }
-            ]
-         }
-      ]
-   },
-   plugins: [
-      ...
-   ].concat(generateNunjucksHtml(pagesGlobPath, pagesPath, {
-      ...
-      // html-webpack-plugin options (minify, inject, chunks)
-   }))
+    module: {
+        rules: [
+            {
+                test: /\.html$|njk|nunjucks/,
+                exclude: [/node_modules/, /(src)/],
+                use: [
+                    'html-loader',
+                    {
+                        loader: 'nunjucks-template-loader',
+                        options: {
+                            path: templatesPath
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    plugins: [
+        ...
+    ].concat(generateHtmlPlugin(pagesPath, {
+        minify: true,
+        inject:  true,
+        filepath: '/',
+        chunks: {}
+    }))
 }
 ```
 
@@ -82,36 +75,35 @@ function shorten(value, count) {
 }
 
 module.exports = {
-   module: {
-      rules: [
-         {
-            test: /\.html$|njk|nunjucks/,
-            exclude: [/(node_modules)/, /(src)/],
-            use: [
-               'html-loader',
-               {
-                  loader: 'nunjucks-template-loader',
-                  options: {
-                     paths: templateGlobPath,
-		     data: {
-		        title: 'projectTitle',
-		        foo: 'indexBar'
-                     },
-		     filters: {
-		        shorten
-		     }
-                  }
-               }
-            ]
-         }
-      ]
-   },
-   plugins: [
-      ...
-   ].concat(generateNunjucksHtml(pagesGlobPath, pagesPath, {
-      ...
-      // html-webpack-plugin options (minify, inject, chunks)
-   }))
+    module: {
+        rules: [
+            {
+                test: /\.html$|njk|nunjucks/,
+                exclude: [/node_modules/, /(src)/],
+                use: [
+                    'html-loader',
+                    {
+                        loader: 'nunjucks-template-loader',
+                        options: {
+                            path: templatesPath,
+                            filters: {
+                                shorten
+                            },
+                            data: {
+                                title: 'ntl',
+                                foo: 'bar'
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    plugins: [
+        ...
+    ].concat(generateHtmlPlugin(pagesPath, {
+        ...options
+    }))
 }
 ```
 
@@ -156,7 +148,7 @@ app
 
 {% block content %}
    <div class="content">
-        <p>shorten filters example:</p>
+        <h2>{{ title }}</h2>
         <div>{{ foo | shorten(3) }}</div>
    </div>
 {% endblock %}

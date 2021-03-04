@@ -1,7 +1,7 @@
 {
     "name": "nunjucks-template-loader",
     "version": "1.0.11",
-    "description": "Nunjucks loader for webpack",
+    "description": "Webpack loader for Nunjucks",
     "npmName": "nunjucks-template-loader",
     "keywords": [
         "webpack",
@@ -14,7 +14,8 @@
         "render",
         "ssr",
         "html",
-        "glob"
+        "glob",
+        "ntl"
     ],
     "author": "Nickolay Eryomin - https://github.com/truerk",
     "license": "MIT",

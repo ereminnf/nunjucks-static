@@ -1,9 +1,9 @@
 /*
  * Nunjucks-template-laoder
- * Webpach loader for nunjucks
+ * Webpack loader for Nunjucks
  * https://github.com/truerk/nunjucks-template-laoder
  *
- * Copyright 2020 Eryomin Nickolay
+ * Copyright 2021 Eryomin Nickolay
  * Published under MIT License
  */
 
