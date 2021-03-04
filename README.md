@@ -35,7 +35,9 @@ const pagesPath = path.join(templatesPath, 'pages');
 ```
 
 generateNunjucksHtml - generating html file using HTML Webpack Plugin
+
 templatesPath - path to your templates
+
 pagesPath - path to your page templates
 
 ```js
