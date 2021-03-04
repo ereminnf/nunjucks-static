@@ -18,6 +18,7 @@ function generateHtmlPlugin(pagesPath, optionsHmlPlugin = {}) {
             filepath: '/',
             filename: ''
         }, optionsHmlPlugin)
+        const chunksForPage = option.chunks;
 
         let pageFolders = generateGlobPath(pagesPath + '/*').folders;
         let pages = [];
@@ -32,16 +33,9 @@ function generateHtmlPlugin(pagesPath, optionsHmlPlugin = {}) {
             let parts;
             let name;
             let extension;
-            let chunks = [];
+            let chunks = chunksForPage[page];
 
             chunks.push(page);
-
-            // add chunks for entry point
-            for (const pageChunk in option.chunks) {
-                if (page === pageChunk) {
-                    chunks = chunks.concat(option.chunks[pageChunk]);
-                }
-            }
 
             // get page template partials
             if (fs.existsSync(`${pagesPath}/${page}/index.njk`)) {
@@ -54,13 +48,11 @@ function generateHtmlPlugin(pagesPath, optionsHmlPlugin = {}) {
 
             const filename = `${option.filepath}${page === 'index' ? '' : `${page}/`}index.html`;
 
-            return new HtmlWebpackPlugin(Object.assign(option, {
-                template: `${pagesPath}/${page}/${name}.${extension}`,
-                filename: filename,
-                inject: option.inject,
-                minify: option.minify,
-                chunks: chunks,
-            }));
+            option.template = `${pagesPath}/${page}/${name}.${extension}`;
+            option.filename = filename;
+            option.chunks = chunks;
+
+            return new HtmlWebpackPlugin(option);
         });
 
         return pages;
