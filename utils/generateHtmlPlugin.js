@@ -1,6 +1,7 @@
 const fs                 = require("fs");
 const HtmlWebpackPlugin  = require("html-webpack-plugin");
 const generateGlobPath   = require("./generateGlobPath.js");
+const path = require('path');
 
 
 /**
@@ -15,45 +16,44 @@ function generateHtmlPlugin(pagesPath, optionsHmlPlugin = {}) {
             minify: true,
             inject: true,
             chunks: {},
-            filepath: '/',
+            filepath: '',
             filename: ''
         }, optionsHmlPlugin)
         const chunksForPage = option.chunks;
+        const folderNamePath = path.basename(pagesPath)
 
-        let pageFolders = generateGlobPath(pagesPath + '/*').folders;
-        let pages = [];
-
-        for (const i in pageFolders) {
-            for (let name in pageFolders[i]){
-                pages.push(name)
+        let matchesPage = generateGlobPath(pagesPath + '/**/*').files.filter(item => {
+            for (const key in item) {
+                return key.split('.').shift() === 'index';
             }
-        }
 
-        pages = pages.map(page => {
-            let parts;
-            let name;
-            let extension;
-            let chunks = chunksForPage[page];
+            return false
+        }).map(item => {
+            const page = {};
 
-            chunks.push(page);
+                page.path = item['index.njk'];
+                page.name = path.basename(path.join(item['index.njk'], '..'));
+                page.pathToBuild = page.path.split(folderNamePath).pop().replace('index.njk', '');
 
-            // get page template partials
-            if (fs.existsSync(`${pagesPath}/${page}/index.njk`)) {
-                parts = 'index.njk'.split(".");
-                name = parts[0];
-                extension = parts[1];
+            return page;
+        });
+
+        pages = matchesPage.map(page => {
+            let chunks = chunksForPage[page.name];
+
+            chunks.push(page.name);
+
+            if (page.name === 'index') {
+                option.filename = `${option.filepath}/index.html`;
             } else {
-                throw Error('page template not found')
+                option.filename = `${option.filepath}${page.pathToBuild}index.html`;
             }
 
-            const filename = `${option.filepath}${page === 'index' ? '' : `${page}/`}index.html`;
-
-            option.template = `${pagesPath}/${page}/${name}.${extension}`;
-            option.filename = filename;
+            option.template = path.join(`${pagesPath}${page.pathToBuild}`, 'index.njk');
             option.chunks = chunks;
 
             return new HtmlWebpackPlugin(option);
-        });
+        })
 
         return pages;
     } catch (e) {
