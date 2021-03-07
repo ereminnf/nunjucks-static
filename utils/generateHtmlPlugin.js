@@ -41,7 +41,9 @@ function generateHtmlPlugin(pagesPath, optionsHmlPlugin = {}) {
         pages = matchesPage.map(page => {
             let chunks = chunksForPage[page.name];
 
-            chunks.push(page.name);
+            if (chunks) {
+                chunks.push(page.name);
+            }
 
             if (page.name === 'index') {
                 option.filename = `${option.filepath}/index.html`;
