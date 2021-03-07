@@ -24,8 +24,6 @@ npm i --save-dev nunjucks-template-loader
 
 used with html-loader and html-webpack-plugin
 
-starter kit: https://github.com/truerk/starter-kit-nunjucks
-
 **webpack.config.js**
 
 ```js
@@ -43,6 +41,20 @@ pagesPath - path to your page templates
 ```js
 module.exports = {
     module: {
+        entry: {
+            nouislider: [
+                `nouislider/index.js`,
+            ],
+            swiper: [
+                `swiper/index.js`,
+            ],
+            index: [
+                `index/index.js`,
+            ],
+            about: [
+                `about/index.js`,
+            ]
+        }
         rules: [
             {
                 test: /\.html$|njk|nunjucks/,
@@ -65,7 +77,16 @@ module.exports = {
         minify: true,
         inject:  true,
         filepath: '/',
-        chunks: {}
+        // chunks - inject entry in page template
+        chunks: {
+            index: [
+                'nouislider',
+                'swiper'
+            ],
+            about: [
+                'swiper'
+            ]
+        }
     }))
 }
 ```

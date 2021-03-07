@@ -31,9 +31,9 @@ function generateHtmlPlugin(pagesPath, optionsHmlPlugin = {}) {
         }).map(item => {
             const page = {};
 
-                page.path = item['index.njk'];
-                page.name = path.basename(path.join(item['index.njk'], '..'));
-                page.pathToBuild = page.path.split(folderNamePath).pop().replace('index.njk', '');
+            page.path = item['index.njk'];
+            page.name = path.basename(path.join(item['index.njk'], '..'));
+            page.pathToBuild = page.path.split(folderNamePath).pop().replace('index.njk', '');
 
             return page;
         });
