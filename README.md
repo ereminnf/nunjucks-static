@@ -57,8 +57,8 @@ module.exports = {
         }
         rules: [
             {
-                test: /\.html$|njk|nunjucks/,
-                exclude: [/node_modules/, /(src)/],
+                test: /\.(html|njk|nunjucks)$/,
+                exclude: [/node_modules/],
                 use: [
                     'html-loader',
                     {
@@ -101,8 +101,8 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.html$|njk|nunjucks/,
-                exclude: [/node_modules/, /(src)/],
+                test: /\.(html|njk|nunjucks)$/,
+                exclude: [/node_modules/],
                 use: [
                     'html-loader',
                     {
