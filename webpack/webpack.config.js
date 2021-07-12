@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 const utils = require('./index').utils;
-const htmlPlugin = require('../src/htmlPlugin');
+const htmlPlugin = require('../htmlPlugin');
 
 module.exports = (env, argv) => {
     const prod = argv.mode === 'production';
@@ -64,24 +64,6 @@ module.exports = (env, argv) => {
                 data: {},
                 filters: {},
             })
-            // ...generateHtmlPlugin(utils.paths.pages, {
-            //     minify: false,
-            //     // inject: 'head',
-            //     chunks: utils.chunks,
-            //     filepath: `/${utils.paths.html}`,
-            //     title: 'qwe'
-            // })
-            // ...renderTemplatePlugin(utils.paths.pages, {
-            //     minify: false,
-            //     // inject: 'head',
-            //     chunks: utils.chunks,
-            //     filepath: `/${utils.paths.html}`,
-            //     title: 'qwe',
-            //     path: utils.paths.templates,
-            //     filters: utils.filters,
-            //     data: {}
-            // }),
-            // new NunjucksHtml()
         ],
         output: {
             path: utils.paths.dist['app'],

@@ -27,26 +27,31 @@ used with html-loader and html-webpack-plugin
 **webpack.config.js**
 
 ```js
-const generateHtmlPlugin = require('nunjucks-template-loader/utils/generateHtmlPlugin');
-const templatesPath = path.join(__dirname, 'templates');
-const pagesPath = path.join(templatesPath, 'pages');
+const htmlPlugin = require('nunjucks-template-loader/htmlPlugin');
+const paths = {
+    templates: path.join(__dirname, 'templates'),
+    pages: path.join(paths.templates, 'pages'),
+    output: '',
+};
 ```
 
-generateNunjucksHtml - generating html file using HTML Webpack Plugin
+htmlPlugin - generating html file using HTML Webpack Plugin
 
-templatesPath - path to your templates
+paths.templates - path to your templates
 
-pagesPath - path to your page templates
+paths.pages - path to your page templates
+
+paths.output - path to output html
 
 ```js
 module.exports = {
     module: {
         entry: {
-            nouislider: [
-                `nouislider/index.js`,
+            firstEntry: [
+                `firstEntry/index.js`,
             ],
-            swiper: [
-                `swiper/index.js`,
+            secondEntry: [
+                `secondEntry/index.js`,
             ],
             index: [
                 `index/index.js`,
@@ -54,7 +59,7 @@ module.exports = {
             about: [
                 `about/index.js`,
             ]
-        }
+        },
         rules: [
             {
                 test: /\.(html|njk|nunjucks)$/,
@@ -64,7 +69,7 @@ module.exports = {
                     {
                         loader: 'nunjucks-template-loader',
                         options: {
-                            path: templatesPath
+                            path: paths.templates
                         }
                     }
                 ]
@@ -72,61 +77,36 @@ module.exports = {
         ]
     },
     plugins: [
-        ...
-    ].concat(generateHtmlPlugin(pagesPath, {
-        minify: true,
-        inject:  true,
-        filepath: '/',
-        // chunks - inject entry in page template
-        chunks: {
-            index: [
-                'nouislider',
-                'swiper'
-            ],
-            about: [
-                'swiper'
-            ]
-        }
-    }))
-}
-```
-
-**with data and filters**
-```js
-function shorten(value, count) {
-   return value.slice(0, count || 5);
-}
-
-module.exports = {
-    module: {
-        rules: [
-            {
-                test: /\.(html|njk|nunjucks)$/,
-                exclude: [/node_modules/],
-                use: [
-                    'html-loader',
-                    {
-                        loader: 'nunjucks-template-loader',
-                        options: {
-                            path: templatesPath,
-                            filters: {
-                                shorten
-                            },
-                            data: {
-                                title: 'ntl',
-                                foo: 'bar'
-                            }
-                        }
-                    }
+        ...htmlPlugin({
+            pagesPath: paths.pages,
+            templatePath: paths.templates,
+            outputPath: paths.output,
+            data: {
+                foo: 'bar',
+                title: 'site-title'
+            },
+            filters: {
+                shorten: function (value, count) {
+                    return value.slice(0, count || 5);
+                }
+            }
+        }, {
+            // ...HTML Webpack Plugin options
+            minify: false,
+            inject: false,
+            chunks: {
+                index: [
+                    'firstEntry',
+                    'secondEntry'
+                ],
+                about: [
+                    'firstEntry'
                 ]
             }
-        ]
-    },
-    plugins: [
-        ...
-    ].concat(generateHtmlPlugin(pagesPath, {
-        ...options
-    }))
+        }, {
+            // ...nunjucks options
+        })
+    ]
 }
 ```
 
@@ -146,21 +126,31 @@ app
 │     └── layout.njk
 └── ...
 ```
+
 **layout.njk**
 ```markup
 <!DOCTYPE html>
 <html lang="en">
-<head>{{ title }}</head>
+<head>
+    <title>{{ title }}</title>
+
+    {% for item in bundles.css %}
+        <link rel="stylesheet" href="{{ item }}">
+    {% endfor %}
+</head>
 <body>
 
     {% include "components/header.njk" %}
 
-    <div id="app">
+    <main class="main">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
     {% include "components/footer.njk" %}
 
+    {% for item in bundles.js %}
+        <link rel="stylesheet" href="{{ item }}">
+    {% endfor %}
 </body>
 </html>
 ```
@@ -171,7 +161,6 @@ app
 
 {% block content %}
    <div class="content">
-        <h2>{{ title }}</h2>
         <div>{{ foo | shorten(3) }}</div>
    </div>
 {% endblock %}

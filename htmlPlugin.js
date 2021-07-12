@@ -1,8 +1,8 @@
 const fs                 = require("fs");
 const HtmlWebpackPlugin  = require("html-webpack-plugin");
-const generateGlobPath   = require("../src/getFiles.js");
+const generateGlobPath   = require("./src/getFiles.js");
 const path = require('path');
-const NunjucksPlugin = require("./nunjucksPlugin.js");
+const NunjucksPlugin = require("./src/nunjucksPlugin.js");
 
 /**
  * Generate HtmlWebpackPlugin
