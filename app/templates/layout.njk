@@ -5,8 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nunjucks-template-loader</title>
+
+    {% for item in htmlWebpackPlugin.files.css %}
+        <link rel="stylesheet" href="{{ item }}">
+    {% endfor %}
 </head>
 <body>
     {% block content %}{% endblock %}
+
+    {% for item in htmlWebpackPlugin.files.js %}
+        <link rel="stylesheet" href="{{ item }}">
+    {% endfor %}
 </body>
 </html>

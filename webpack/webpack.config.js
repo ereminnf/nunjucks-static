@@ -4,8 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
-const generateHtmlPlugin = require('nunjucks-template-loader/utils/generateHtmlPlugin');
 const utils = require('./index').utils;
+const htmlPlugin = require('../src/htmlPlugin');
 
 module.exports = (env, argv) => {
     const prod = argv.mode === 'production';
@@ -57,12 +57,31 @@ module.exports = (env, argv) => {
                 chunkFilename: `${utils.paths.bundles}/css/[id].${prod ? '[contenthash:5].' : ''}css`,
             }),
             new webpack.ProgressPlugin(),
-            ...generateHtmlPlugin(utils.paths.pages, {
-                minify: false,
-                // inject: 'head',
-                chunks: utils.chunks,
-                filepath: `/${utils.paths.html}`
+            ...htmlPlugin({
+                pagesPath: utils.paths.pages,
+                templatePath: utils.paths.templates,
+                outputPath: utils.paths.html,
+                data: {},
+                filters: {},
             })
+            // ...generateHtmlPlugin(utils.paths.pages, {
+            //     minify: false,
+            //     // inject: 'head',
+            //     chunks: utils.chunks,
+            //     filepath: `/${utils.paths.html}`,
+            //     title: 'qwe'
+            // })
+            // ...renderTemplatePlugin(utils.paths.pages, {
+            //     minify: false,
+            //     // inject: 'head',
+            //     chunks: utils.chunks,
+            //     filepath: `/${utils.paths.html}`,
+            //     title: 'qwe',
+            //     path: utils.paths.templates,
+            //     filters: utils.filters,
+            //     data: {}
+            // }),
+            // new NunjucksHtml()
         ],
         output: {
             path: utils.paths.dist['app'],
@@ -109,7 +128,7 @@ module.exports = (env, argv) => {
             // port: 8080,
             writeToDisk: true,
             compress: true,
-            liveReload: false,
+            liveReload: true,
             hot: false,
             historyApiFallback: {
                 rewrites: [
