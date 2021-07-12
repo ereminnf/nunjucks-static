@@ -2,12 +2,11 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 
-
 /**
- * Generate glob path
+ * Generate pathes
  * @param {string} matches
  */
-function generateGlobPath(matches) {
+function getFiles(matches) {
     try {
         const pathes = glob.sync(matches);
 
@@ -32,5 +31,4 @@ function generateGlobPath(matches) {
     }
 }
 
-
-module.exports = generateGlobPath
+module.exports = getFiles

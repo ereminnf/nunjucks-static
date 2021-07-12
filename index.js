@@ -7,30 +7,20 @@
  * Published under MIT License
  */
 
-
 const utils = require('loader-utils');
 const path = require('path');
-const nunjucks = require('nunjucks');
-const generateGlobPath = require('./utils/generateGlobPath');
-
+const getFiles = require('./src/getFiles');
 
 module.exports = function(template) {
 	this.cacheable();
 
-    // loaders
-	const callback = this.async();
+    const callback = this.async();
 	const options = utils.getOptions(this);
+	const pathTemplate = options.path;
 
-    // options
-	let pathTemplate = options.path;
-    let data = options.data;
-    let filters = options.filters;
-
-    generateGlobPath(pathTemplate + '/**').files.map(item => {
+    getFiles(pathTemplate + '/**').files.map(item => {
         for (const key in item) {
-            if (key !== 'index.njk') {
-                return item[key];
-            }
+            return item[key];
         }
     }).forEach(item => {
         if (item) {
@@ -38,18 +28,5 @@ module.exports = function(template) {
         }
     })
 
-    const njk = nunjucks.configure(pathTemplate, {
-        autoescape: true,
-        noCache: true,
-        watch: false
-    });
-
-    // filters
-    for (const key in filters) {
-        njk.addFilter(key, filters[key]);
-    }
-
-    const html = njk.renderString(template, data)
-
-	callback(null, html);
+	callback(null, template);
 };

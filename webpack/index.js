@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const filters = require('nunjucks-template-loader/filters');
+const filters = require('../filters');
 const path = require('path');
 
 const rootPath = path.join(__dirname, '..');
@@ -125,7 +125,7 @@ const utils = {
                 test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+)?$/,
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[ext]'
+                    name: '[name]-[hash:4].[ext]'
                 }
             }
         },
@@ -147,9 +147,7 @@ const utils = {
                     {
                         loader: utils.paths.loader,
                         options: {
-                            path: utils.paths.templates,
-                            filters: utils.filters,
-                            data: {}
+                            path: utils.paths.templates
                         }
                     }
                 ]
