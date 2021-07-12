@@ -16,7 +16,7 @@ class NunjucksPlugin {
                         template: data.html,
                         path: this.options.templatePath,
                         data: Object.assign({
-                            bundles: JSON.parse(data.plugin.assetJson),
+                            bundles: this.getBundles(JSON.parse(data.plugin.assetJson)),
                         }, this.options.data),
                         filters: this.options.filters,
                     });
@@ -25,6 +25,24 @@ class NunjucksPlugin {
                 }
             )
         })
+    }
+
+    getBundles(files) {
+        let bundles = {
+            css: {},
+            js: {}
+        };
+
+        files.forEach(file => {
+            const ext = file.split('/').pop().split('.')[file.split('.').length - 1];
+            const name = file.split('/').pop().split('.')[0];
+
+            if (name.length > 1) {
+                bundles[ext][name] = file;
+            }
+        });
+
+        return bundles;
     }
 }
 

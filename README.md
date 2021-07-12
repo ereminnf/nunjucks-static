@@ -134,7 +134,7 @@ app
 <head>
     <title>{{ title }}</title>
 
-    {% for item in bundles.css %}
+    {% for name, item in bundles.css %}
         <link rel="stylesheet" href="{{ item }}">
     {% endfor %}
 </head>
@@ -148,8 +148,8 @@ app
 
     {% include "components/footer.njk" %}
 
-    {% for item in bundles.js %}
-        <link rel="stylesheet" href="{{ item }}">
+    {% for name, item in bundles.js %}
+        <script src="{{ item }}"></script>
     {% endfor %}
 </body>
 </html>
