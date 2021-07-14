@@ -22,6 +22,11 @@ npm i --save-dev nunjucks-template-loader
 
 ## Usage
 
+example app (app folder in repository):
+```
+npm i && npm run start
+```
+
 used with html-loader and html-webpack-plugin
 
 **webpack.config.js**
