@@ -1,6 +1,6 @@
-const fs                 = require("fs");
-const HtmlWebpackPlugin  = require("html-webpack-plugin");
-const generateGlobPath   = require("./src/getFiles.js");
+const fs = require("fs");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const generateGlobPath = require("./src/getFiles.js");
 const path = require('path');
 const NunjucksPlugin = require("./src/nunjucksPlugin.js");
 
@@ -27,7 +27,7 @@ function htmlPlugin(opt, htmlOpt, njkOption) {
             inject: false,
             chunks: {},
             filename: ''
-        }, htmlOpt);
+        }, htmlOpt || {});
 
         const pageFolderName = path.basename(options.pagesPath);
 
@@ -52,22 +52,23 @@ function htmlPlugin(opt, htmlOpt, njkOption) {
         });
 
         pages = pages.map(page => {
-            let chunks = htmlOption.chunks[page.name];
+            const opt = { ...htmlOption };
+            let chunks = opt.chunks[page.name];
 
             if (chunks) {
                 chunks.push(page.name);
             }
 
             if (page.name === 'index') {
-                htmlOption.filename = `${options.outputPath}/index.html`;
+                opt.filename = `${options.outputPath}/index.html`;
             } else {
-                htmlOption.filename = `${options.outputPath}${page.pathToBuild}index.html`;
+                opt.filename = `${options.outputPath}${page.pathToBuild}index.html`;
             }
 
-            htmlOption.template = path.join(`${options.pagesPath}${page.pathToBuild}`, 'index.njk');
-            htmlOption.chunks = chunks;
+            opt.template = path.join(`${options.pagesPath}${page.pathToBuild}`, 'index.njk');
+            opt.chunks = chunks;
 
-            return new HtmlWebpackPlugin(htmlOption);
+            return new HtmlWebpackPlugin(opt);
         })
 
         pages.push(new NunjucksPlugin({
