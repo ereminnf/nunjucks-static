@@ -17,6 +17,10 @@ module.exports = (env, argv) => {
                 `${utils.paths.client}/styles/index.scss`,
                 `${utils.paths.client}/app.js`
             ],
+            uikit_modal: [
+                `${utils.paths.client}/styles/index.scss`,
+                `${utils.paths.client}/app.js`
+            ],
         },
         resolve: {
             extensions: utils.extensions(),
@@ -43,9 +47,9 @@ module.exports = (env, argv) => {
             new FixStyleOnlyEntriesPlugin(),
             new CleanWebpackPlugin(
                 {
-                cleanStaleWebpackAssets: false,
-                cleanAfterEveryBuildPatterns: ["!html", "!html/**/*", "*.json", "*.hot-update.json", "*.hot-update.js"]
-            }
+                    cleanStaleWebpackAssets: false,
+                    cleanAfterEveryBuildPatterns: ["!html", "!html/**/*", "*.json", "*.hot-update.json", "*.hot-update.js"]
+                }
             ),
             new CopyWebpackPlugin({
                 patterns: [
@@ -62,7 +66,7 @@ module.exports = (env, argv) => {
                 templatePath: utils.paths.templates,
                 outputPath: utils.paths.html,
                 data: {},
-                filters: {},
+                filters: {}
             })
         ],
         output: {

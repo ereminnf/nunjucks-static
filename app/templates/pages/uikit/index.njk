@@ -1,1 +1,8 @@
-uikit
+{% extends "layout.njk" %}
+
+{% block content %}
+    uikit
+   <div class="content">
+        {{ bundles | dump | safe }}
+    </div>
+{% endblock %}

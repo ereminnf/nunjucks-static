@@ -1,1 +1,8 @@
-uikit modal
+{% extends "layout.njk" %}
+
+{% block content %}
+    modal
+   <div class="content">
+        {{ bundles | dump | safe }}
+    </div>
+{% endblock %}

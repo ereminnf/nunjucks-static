@@ -11,15 +11,10 @@ function getPages(pagesPath, dataGlobal = {}) {
     /** Собираем данные по страницам */
     pages = pages.map(item => {
         const data = Object.assign({
-            /** Название страницы */
             name: '',
-            /** Путь до index файла страницы */
             filePath: '',
-            /** Путь по которому будет складываться страница */
             buildPath: '',
-            /** Путь до папки страницы */
             pagePath: '',
-            /** Путь для формирования buildPath дочерних страниц */
             childPath: ''
         }, dataGlobal)
 
@@ -52,8 +47,6 @@ function getPages(pagesPath, dataGlobal = {}) {
     return pagesWithChildren;
 }
 
-const pages = getPages(pagesPath);
-
-console.log(pages);
+// const pages = getPages(pagesPath);
 
 module.exports = getPages
