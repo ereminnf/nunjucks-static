@@ -1,6 +1,6 @@
 const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const generateGlobPath = require("./src/getFiles.js");
+const getFiles = require("./src/getFiles.js");
 const path = require('path');
 const NunjucksPlugin = require("./src/nunjucksPlugin.js");
 
@@ -32,7 +32,7 @@ function htmlPlugin(opt, htmlOpt, njkOption) {
         const pageFolderName = path.basename(options.pagesPath);
 
         // get only index.njk
-        let pages = generateGlobPath(options.pagesPath + '/**/*').files.filter(item => {
+        let pages = getFiles(options.pagesPath + '/**/*').files.filter(item => {
             for (const key in item) {
                 return key.split('.').shift() === 'index';
             }
