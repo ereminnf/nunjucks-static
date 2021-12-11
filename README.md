@@ -1,12 +1,9 @@
 [npm-url]: https://www.npmjs.com/package/nunjucks-template-loader
 [npm-image]: https://img.shields.io/npm/v/nunjucks-template-loader?color=blue
-
 [logo-url]: https://github.com/truerk/nunjucks-template-loader
 [logo-image]: https://i.ibb.co/ZLJQnqP/nunjucks-template-loader.webp
-
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://github.com/truerk/nunjucks-template-loader/blob/master/LICENSE
-
 [size-image]: https://img.shields.io/npm/dm/nunjucks-template-loader.svg
 [size-url]: https://www.npmjs.com/package/nunjucks-template-loader
 
@@ -23,6 +20,7 @@ npm i --save-dev nunjucks-template-loader
 ## Usage
 
 example app (app folder in repository):
+
 ```
 npm i && npm run start
 ```
@@ -32,11 +30,11 @@ used with html-loader and html-webpack-plugin
 **webpack.config.js**
 
 ```js
-const htmlPlugin = require('nunjucks-template-loader/htmlPlugin');
+const htmlPlugin = require("nunjucks-template-loader/htmlPlugin");
 const paths = {
-    templates: path.join(__dirname, 'templates'),
-    pages: path.join(paths.templates, 'pages'),
-    output: '',
+    templates: path.join(__dirname, "templates"),
+    pages: path.join(paths.templates, "pages"),
+    output: "",
 };
 ```
 
@@ -52,34 +50,24 @@ paths.output - path to output html
 module.exports = {
     module: {
         entry: {
-            firstEntry: [
-                `firstEntry/index.js`,
-            ],
-            secondEntry: [
-                `secondEntry/index.js`,
-            ],
-            index: [
-                `index/index.js`,
-            ],
-            about: [
-                `about/index.js`,
-            ]
+            index: [`index/index.js`],
+            about: [`about/index.js`],
         },
         rules: [
             {
                 test: /\.(html|njk|nunjucks)$/,
                 exclude: [/node_modules/],
                 use: [
-                    'html-loader',
+                    "html-loader",
                     {
-                        loader: 'nunjucks-template-loader',
+                        loader: "nunjucks-template-loader",
                         options: {
-                            path: paths.templates
-                        }
-                    }
-                ]
-            }
-        ]
+                            path: paths.templates,
+                        },
+                    },
+                ],
+            },
+        ],
     },
     plugins: [
         ...htmlPlugin({
@@ -87,35 +75,21 @@ module.exports = {
             templatePath: paths.templates,
             outputPath: paths.output,
             data: {
-                foo: 'bar',
-                title: 'site-title'
+                foo: "bar",
+                title: "site-title",
             },
             filters: {
                 shorten: function (value, count) {
                     return value.slice(0, count || 5);
-                }
-            }
-        }, {
-            // ...HTML Webpack Plugin options
-            minify: false,
-            inject: false,
-            chunks: {
-                index: [
-                    'firstEntry',
-                    'secondEntry'
-                ],
-                about: [
-                    'firstEntry'
-                ]
-            }
-        }, {
-            // ...nunjucks options
-        })
-    ]
-}
+                },
+            },
+        }),
+    ],
+};
 ```
 
 **example project structure**
+
 ```
 app
 ├── ...
@@ -127,12 +101,16 @@ app
 │     │     ├── index/
 │     │     │     └── index.njk
 │     │     └── about/
+│     │            ├── pages/
+│     │            │      └── title/
+│     │            │            └── index.njk
 │     │            └── index.njk
 │     └── layout.njk
 └── ...
 ```
 
 **layout.njk**
+
 ```markup
 <!DOCTYPE html>
 <html lang="en">
@@ -161,12 +139,15 @@ app
 ```
 
 **pages**
+
 ```markup
 {% extends "layout.njk" %}
 
 {% block content %}
    <div class="content">
         <div>{{ foo | shorten(3) }}</div>
+        <p>bundles var:</p>
+        {{ bundles | dump | safe }}
    </div>
 {% endblock %}
 ```
