@@ -16,15 +16,15 @@
         "html",
         "ntl"
     ],
-    "author": "Nickolay Eryomin - https://github.com/truerkarmy",
+    "author": "Nickolay Eryomin - https://github.com/ereminnf",
     "license": "MIT",
-    "homepage": "https://github.com/truerkarmy/nunjucks-template-loader",
+    "homepage": "https://github.com/ereminnf/nunjucks-loader",
     "repository": {
         "type": "git",
-        "url": "https://github.com/truerkarmy/nunjucks-template-loader.git"
+        "url": "https://github.com/ereminnf/nunjucks-loader.git"
     },
     "bugs": {
-        "url": "https://github.com/truerkarmy/nunjucks-template-loader/issues"
+        "url": "https://github.com/ereminnf/nunjucks-loader/issues"
     },
     "main": "index.js",
     "scripts": {
