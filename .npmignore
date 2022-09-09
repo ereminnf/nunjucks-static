@@ -1,0 +1,10 @@
+node_modules
+src
+app
+
+.babelrc.js
+.editorConfig
+.gitignore
+.nvmrc
+.prettierignore
+.prettierrc

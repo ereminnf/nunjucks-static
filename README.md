@@ -1,66 +1,47 @@
-[npm-url]: https://www.npmjs.com/package/nunjucks-template-loader
-[npm-image]: https://img.shields.io/npm/v/nunjucks-template-loader?color=blue
-[logo-url]: https://github.com/truerk/nunjucks-template-loader
-[logo-image]: https://i.ibb.co/ZLJQnqP/nunjucks-template-loader.webp
-[license-image]: https://img.shields.io/badge/license-MIT-blue.svg
-[license-url]: https://github.com/truerk/nunjucks-template-loader/blob/master/LICENSE
-[size-image]: https://img.shields.io/npm/dm/nunjucks-template-loader.svg
-[size-url]: https://www.npmjs.com/package/nunjucks-template-loader
+[npm-url]: https://www.npmjs.com/package/@ereminnf/nunjucks-loader
+[npm-image]: https://img.shields.io/npm/v/@ereminnf/nunjucks-loader?color=blue
+[logo-url]: https://github.com/truerk/@ereminnf/nunjucks-loader
+[logo-image]: https://i.ibb.co/ZLJQnqP/@ereminnf/nunjucks-loader.webp
+[size-image]: https://img.shields.io/npm/dm/@ereminnf/nunjucks-loader.svg
+[size-url]: https://www.npmjs.com/package/@ereminnf/nunjucks-loader
 
-# Nunjucks loader [![NPM version][npm-image]][npm-url] [![GitHub license][license-image]][license-url] [![NPM size][size-image]][size-url]
-
-Webpack loader for Nunjucks
+# Nunjucks loader [![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
 
 ## Install
 
 ```js
-npm i --save-dev nunjucks-template-loader
+npm i --save-dev @ereminnf/nunjucks-loader
 ```
 
 ## Usage
-
-example app (app folder in repository):
 
 ```
 npm i && npm run start
 ```
 
-used with html-loader and html-webpack-plugin
-
-**webpack.config.js**
+### webpack.config.js
 
 ```js
-const htmlPlugin = require("nunjucks-template-loader/htmlPlugin");
+const { getNunjucksLoaderPlugins } = require('@ereminnf/nunjucks-loader')
+const path = require('path')
+
 const paths = {
-    templates: path.join(__dirname, "templates"),
-    pages: path.join(paths.templates, "pages"),
-    output: "",
-};
-```
+    templates: path.join(__dirname, 'templates'),
+    pages: path.join(paths.templates, 'pages'),
+    output: '',
+}
 
-htmlPlugin - generating html file using HTML Webpack Plugin
-
-paths.templates - path to your templates
-
-paths.pages - path to your page templates
-
-paths.output - path to output html
-
-```js
 module.exports = {
+    // ...
     module: {
-        entry: {
-            index: [`index/index.js`],
-            about: [`about/index.js`],
-        },
         rules: [
             {
                 test: /\.(html|njk|nunjucks)$/,
                 exclude: [/node_modules/],
                 use: [
-                    "html-loader",
+                    'html-loader',
                     {
-                        loader: "nunjucks-template-loader",
+                        loader: '@ereminnf/nunjucks-loader',
                         options: {
                             path: paths.templates,
                         },
@@ -70,25 +51,24 @@ module.exports = {
         ],
     },
     plugins: [
-        ...htmlPlugin({
+        ...getNunjucksLoaderPlugins({
             pagesPath: paths.pages,
             templatePath: paths.templates,
             outputPath: paths.output,
             data: {
-                foo: "bar",
-                title: "site-title",
+                foo: 'bar',
             },
             filters: {
                 shorten: function (value, count) {
-                    return value.slice(0, count || 5);
+                    return value.slice(0, count || 5)
                 },
             },
         }),
     ],
-};
+}
 ```
 
-**example project structure**
+### Project structure
 
 ```
 app
@@ -102,16 +82,16 @@ app
 │     │     │     └── index.njk
 │     │     └── about/
 │     │            ├── pages/
-│     │            │      └── title/
+│     │            │      └── us/
 │     │            │            └── index.njk
 │     │            └── index.njk
 │     └── layout.njk
 └── ...
 ```
 
-**layout.njk**
+### layout
 
-```markup
+```twig
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,15 +118,15 @@ app
 </html>
 ```
 
-**pages**
+### Page
 
-```markup
+```twig
 {% extends "layout.njk" %}
 
 {% block content %}
    <div class="content">
         <div>{{ foo | shorten(3) }}</div>
-        <p>bundles var:</p>
+        <p>bundles:</p>
         {{ bundles | dump | safe }}
    </div>
 {% endblock %}

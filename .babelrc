@@ -3,14 +3,8 @@
         "@babel/preset-env"
     ],
     "plugins": [
-        ["module-resolver", {
-            "root": ["./app"],
-            "alias": {
-                // "@app": "./app",
-            }
-        }],
         "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-transform-runtime",
-        "@babel/plugin-proposal-class-properties"
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-transform-runtime"
     ]
 }

@@ -1,2 +1,11 @@
 node_modules
-dist/
+
+# misc
+.vscode
+.DS_Store
+
+# dist
+build
+lib
+dist
+tsc
