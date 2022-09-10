@@ -16,8 +16,19 @@ export class NunjucksStaticPlugin {
         this.options = props.options
     }
 
-    apply(compiler: any) {
+    apply(compiler) {
         compiler.hooks.compilation.tap('MyPlugin', (compilation) => {
+            let bundle = []
+
+            HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
+                'NunjucksStaticPlugin',
+                (data, cb) => {
+                    bundle = [...(data.assets.js || []), ...(data.assets.css || [])]
+
+                    cb(null, data)
+                }
+            )
+
             HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync('NunjucksStaticPlugin', (data, cb) => {
                 data.html = renderToString({
                     template: data.html,
@@ -25,7 +36,7 @@ export class NunjucksStaticPlugin {
                     data: Object.assign(
                         {},
                         {
-                            bundles: this.getBundles(JSON.parse((data.plugin as any).assetJson)),
+                            bundle: this.getBundle(bundle),
                         },
                         this.options.data
                     ),
@@ -37,8 +48,8 @@ export class NunjucksStaticPlugin {
         })
     }
 
-    getBundles(files: string[]) {
-        let bundles = {
+    getBundle(files: string[]) {
+        let bundle = {
             css: {},
             js: {},
         }
@@ -48,10 +59,10 @@ export class NunjucksStaticPlugin {
             const name = file.split('/').pop().split('.')[0]
 
             if (name.length > 1) {
-                bundles[ext][name] = file
+                bundle[ext][name] = file
             }
         })
 
-        return bundles
+        return bundle
     }
 }

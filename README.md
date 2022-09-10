@@ -5,7 +5,22 @@
 [size-image]: https://img.shields.io/npm/dm/nunjucks-static.svg
 [size-url]: https://www.npmjs.com/package/nunjucks-static
 
-# Nunjucks static [![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
+# Nunjucks static
+
+[![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
+
+### The old package v3 [nunjucks-template-loader](https://www.npmjs.com/package/nunjucks-template-loader) is no longer supported and has been renamed to nunjucks-static!
+
+---
+
+This package adds nunjucks support for webpack as an HTML templating engine. It also supports the development of a multi-page site with nested pages with static html generation.
+
+Inside nunjucks templates, a "bundle" variable will be available, which will contain the entry files of the build.
+
+In the "data" property in the getNunjucksStaticPlugins function, you can pass any variables in the object view, where the key is the name of the variable that will be available in the nunjucks templates.
+
+-   Webpack support: only 5+
+-   New 4+ version tested on node 16 version
 
 ## Install
 
@@ -21,14 +36,28 @@ npm i --save-dev nunjucks-static
 const { getNunjucksStaticPlugins } = require('nunjucks-static')
 const path = require('path')
 
-const paths = {
-    templates: path.join(__dirname, 'templates'),
-    pages: path.join(paths.templates, 'pages'),
-    output: '',
+const resolvePath = (...pathResolve) => {
+    return path.join(process.cwd(), ...pathResolve)
 }
 
+const paths = {
+    src: resolvePath('src'),
+    build: resolvePath('build'),
+    templates: resolvePath('templates'),
+    pages: resolvePath('templates/pages'),
+    output: resolvePath('build/html'),
+}
+
+// Add nunjucks-static loader and plugin to webpack config
 module.exports = {
     // ...
+    entry: {
+        main: resolvePath(paths.src, 'pages/main'),
+        about: resolvePath(paths.src, 'pages/about'),
+    },
+    output: {
+        path: paths.build,
+    },
     module: {
         rules: [
             {
@@ -47,12 +76,12 @@ module.exports = {
         ],
     },
     plugins: [
-        ...getNunjucksLoaderPlugins({
+        ...getNunjucksStaticPlugins({
             pagesPath: paths.pages,
             templatePath: paths.templates,
             outputPath: paths.output,
             data: {
-                foo: 'bar',
+                title: 'Nunjucks-static',
             },
             filters: {
                 shorten: function (value, count) {
@@ -101,7 +130,7 @@ app
 
     {% include "components/header.njk" %}
 
-    <main class="main">
+    <main class="content">
         {% block content %}{% endblock %}
     </main>
 
@@ -120,10 +149,38 @@ app
 {% extends "layout.njk" %}
 
 {% block content %}
-   <div class="content">
+   <div class="page page-main">
+        <h1>Page main</h1>
+
         <div>{{ foo | shorten(3) }}</div>
         <p>bundles:</p>
         {{ bundles | dump | safe }}
    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ bundle['css']['main'] }}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{ bundle['js']['main'] }}"></script>
+{% endblock %}
+```
+
+```twig
+{% extends "layout.njk" %}
+
+{% block content %}
+   <div class="page page-about">
+        <h1>Page about</h1>
+   </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ bundle['css']['about'] }}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{ bundle['js']['about'] }}"></script>
 {% endblock %}
 ```
