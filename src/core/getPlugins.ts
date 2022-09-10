@@ -35,7 +35,7 @@ export function getNunjucksStaticPlugins(props?: GetNunjucksStaticPluginsProps) 
     pages.push(
         new NunjucksStaticPlugin({
             options,
-        })
+        }) as any
     )
 
     return pages
