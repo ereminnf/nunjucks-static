@@ -30,7 +30,7 @@ npm i --save-dev nunjucks-static
 
 ## Usage
 
-### webpack.config.js
+### Custom webpack.config.js
 
 ```js
 const { getNunjucksStaticPlugins } = require('nunjucks-static')
@@ -54,6 +54,7 @@ module.exports = {
     entry: {
         main: resolvePath(paths.src, 'pages/main'),
         about: resolvePath(paths.src, 'pages/about'),
+        error: resolvePath(paths.src, 'pages/error'),
     },
     output: {
         path: paths.build,
@@ -90,26 +91,42 @@ module.exports = {
             },
         }),
     ],
+    devServer: {
+        // ...
+        historyApiFallback: {
+            rewrites: [
+                {
+                    from: /./,
+                    to: `/error/index.html`,
+                },
+            ],
+            disableDotRule: true,
+        },
+    },
 }
 ```
 
-### Project structure
+### Project structure example
 
 ```
-app
+root
 ├── ...
 ├── templates/
 │     ├── components/
-│     │     ├── header.njk
-│     │     └── footer.njk
-│     ├── pages/
-│     │     ├── index/
+│     │     ├── header/
 │     │     │     └── index.njk
-│     │     └── about/
-│     │            ├── pages/
-│     │            │      └── us/
-│     │            │            └── index.njk
-│     │            └── index.njk
+│     │     └── footer/
+│     │           └── index.njk
+│     ├── pages/
+│     │     ├── main/
+│     │     │     └── index.njk
+│     │     ├── about/
+│     │     │     ├── pages/
+│     │     │     │      └── us/
+│     │     │     │            └── index.njk
+│     │     │     └── index.njk
+│     │     └── error/
+│     │           └── index.njk
 │     └── layout.njk
 └── ...
 ```
@@ -123,7 +140,7 @@ app
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="description" content="{{ title }}"/>
-        
+
         <title>{{ title }}</title>
 
         {% block css %}
@@ -134,13 +151,13 @@ app
     </head>
     <body>
 
-        {% include "components/header.njk" %}
+        {% include "components/header/index.njk" %}
 
         <main class="content">
             {% block content %}{% endblock %}
         </main>
 
-        {% include "components/footer.njk" %}
+        {% include "components/footer/index.njk" %}
 
         {% block js %}
             {% for name, item in bundle.js %}
@@ -192,3 +209,23 @@ app
     <script src="{{ bundle['js']['about'] }}"></script>
 {% endblock %}
 ```
+
+````
+
+```twig
+{% extends "layout.njk" %}
+
+{% block content %}
+   <div class="page page-error">
+        <h1>Page error</h1>
+   </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ bundle['css']['error'] }}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{ bundle['js']['error'] }}"></script>
+{% endblock %}
+````

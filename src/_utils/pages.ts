@@ -25,7 +25,7 @@ export function getPages(props: GetPagesProps, variables?: any) {
             data.filePath = `${item[key]}/index.njk`
             data.pagePath = `${item[key]}`
 
-            if (key === 'index') {
+            if (key === 'main') {
                 data.buildPath = `/index.html`
             } else {
                 data.buildPath = `${data.childPath}/${key}/index.html`
