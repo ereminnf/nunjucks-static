@@ -1,7 +1,7 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { renderToString } from 'src/_utils/nunjucks'
 
-export interface NunjucksPluginProps {
+export interface NunjucksStaticPluginProps {
     options: {
         templatePath: string
         data: any
@@ -9,16 +9,16 @@ export interface NunjucksPluginProps {
     }
 }
 
-export class NunjucksPlugin {
-    options: NunjucksPluginProps['options']
+export class NunjucksStaticPlugin {
+    options: NunjucksStaticPluginProps['options']
 
-    constructor(props: NunjucksPluginProps) {
+    constructor(props: NunjucksStaticPluginProps) {
         this.options = props.options
     }
 
     apply(compiler: any) {
         compiler.hooks.compilation.tap('MyPlugin', (compilation) => {
-            HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync('NunjucksPlugin', (data, cb) => {
+            HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync('NunjucksStaticPlugin', (data, cb) => {
                 data.html = renderToString({
                     template: data.html,
                     path: this.options.templatePath,

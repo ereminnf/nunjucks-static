@@ -2,7 +2,7 @@ import utils from 'loader-utils'
 import path from 'path'
 import { getFiles } from '../_utils/files'
 
-export function nunjucksLoader(template: any) {
+export function nunjucksStaticLoader(template: any) {
     this.cacheable()
 
     const callback = this.async()

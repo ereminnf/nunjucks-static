@@ -1,4 +1,4 @@
-import { nunjucksLoader } from './loader'
-export { getNunjucksLoaderPlugins } from './plugins/get'
+import { nunjucksStaticLoader } from './core/loader'
+export { getNunjucksStaticPlugins } from './core/getPlugins'
 
-export default nunjucksLoader
+export default nunjucksStaticLoader

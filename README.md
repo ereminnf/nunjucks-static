@@ -1,28 +1,24 @@
-[npm-url]: https://www.npmjs.com/package/@ereminnf/nunjucks-loader
-[npm-image]: https://img.shields.io/npm/v/@ereminnf/nunjucks-loader?color=blue
-[logo-url]: https://github.com/truerk/@ereminnf/nunjucks-loader
-[logo-image]: https://i.ibb.co/ZLJQnqP/@ereminnf/nunjucks-loader.webp
-[size-image]: https://img.shields.io/npm/dm/@ereminnf/nunjucks-loader.svg
-[size-url]: https://www.npmjs.com/package/@ereminnf/nunjucks-loader
+[npm-url]: https://www.npmjs.com/package/nunjucks-static
+[npm-image]: https://img.shields.io/npm/v/nunjucks-static?color=blue
+[logo-url]: https://github.com/truerk/nunjucks-static
+[logo-image]: https://i.ibb.co/ZLJQnqP/nunjucks-static.webp
+[size-image]: https://img.shields.io/npm/dm/nunjucks-static.svg
+[size-url]: https://www.npmjs.com/package/nunjucks-static
 
 # Nunjucks loader [![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
 
 ## Install
 
 ```js
-npm i --save-dev @ereminnf/nunjucks-loader
+npm i --save-dev nunjucks-static
 ```
 
 ## Usage
 
-```
-npm i && npm run start
-```
-
 ### webpack.config.js
 
 ```js
-const { getNunjucksLoaderPlugins } = require('@ereminnf/nunjucks-loader')
+const { getNunjucksLoaderPlugins } = require('nunjucks-static')
 const path = require('path')
 
 const paths = {
@@ -41,7 +37,7 @@ module.exports = {
                 use: [
                     'html-loader',
                     {
-                        loader: '@ereminnf/nunjucks-loader',
+                        loader: 'nunjucks-static',
                         options: {
                             path: paths.templates,
                         },

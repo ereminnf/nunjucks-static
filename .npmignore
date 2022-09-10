@@ -2,9 +2,12 @@ node_modules
 src
 app
 
-.babelrc.js
+index.ts
+.babelrc
 .editorConfig
 .gitignore
 .nvmrc
 .prettierignore
 .prettierrc
+tsconfig.json
+tsconfig.tsc.json

@@ -1,8 +1,8 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { NunjucksStaticPlugin } from 'src/core/plugin'
 import { getPages } from 'src/_utils/pages'
-import { NunjucksPlugin } from './nunjucks'
 
-interface GetNunjucksLoaderPluginsProps {
+interface GetNunjucksStaticPluginsProps {
     pagesPath: string
     templatePath: string
     outputPath: string
@@ -10,7 +10,7 @@ interface GetNunjucksLoaderPluginsProps {
     filters: any
 }
 
-export function getNunjucksLoaderPlugins(props?: GetNunjucksLoaderPluginsProps) {
+export function getNunjucksStaticPlugins(props?: GetNunjucksStaticPluginsProps) {
     const options = Object.assign(
         {},
         {
@@ -33,7 +33,7 @@ export function getNunjucksLoaderPlugins(props?: GetNunjucksLoaderPluginsProps) 
     })
 
     pages.push(
-        new NunjucksPlugin({
+        new NunjucksStaticPlugin({
             options,
         })
     )
