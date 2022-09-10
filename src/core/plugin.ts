@@ -1,5 +1,5 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import { renderToString } from 'src/_utils/nunjucks'
+import { renderToString } from '../_utils/nunjucks'
 
 export interface NunjucksStaticPluginProps {
     options: {

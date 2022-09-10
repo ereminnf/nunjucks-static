@@ -1,6 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import { NunjucksStaticPlugin } from 'src/core/plugin'
-import { getPages } from 'src/_utils/pages'
+import { NunjucksStaticPlugin } from '../core/plugin'
+import { getPages } from '../_utils/pages'
 
 interface GetNunjucksStaticPluginsProps {
     pagesPath: string
