@@ -1,6 +1,6 @@
 [npm-url]: https://www.npmjs.com/package/nunjucks-static
 [npm-image]: https://img.shields.io/npm/v/nunjucks-static?color=blue
-[logo-url]: https://github.com/truerk/nunjucks-static
+[logo-url]: https://github.com/ereminnf/nunjucks-static
 [logo-image]: https://i.ibb.co/ZLJQnqP/nunjucks-static.webp
 [size-image]: https://img.shields.io/npm/dm/nunjucks-static.svg
 [size-url]: https://www.npmjs.com/package/nunjucks-static
