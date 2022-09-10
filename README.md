@@ -119,27 +119,35 @@ app
 ```twig
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>{{ title }}</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content="{{ title }}"/>
+        
+        <title>{{ title }}</title>
 
-    {% for name, item in bundles.css %}
-        <link rel="stylesheet" href="{{ item }}">
-    {% endfor %}
-</head>
-<body>
+        {% block css %}
+            {% for name, item in bundle.css %}
+                <link rel="stylesheet" href="{{ item }}">
+            {% endfor %}
+        {% endblock %}
+    </head>
+    <body>
 
-    {% include "components/header.njk" %}
+        {% include "components/header.njk" %}
 
-    <main class="content">
-        {% block content %}{% endblock %}
-    </main>
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
 
-    {% include "components/footer.njk" %}
+        {% include "components/footer.njk" %}
 
-    {% for name, item in bundles.js %}
-        <script src="{{ item }}"></script>
-    {% endfor %}
-</body>
+        {% block js %}
+            {% for name, item in bundle.js %}
+                <script src="{{ item }}"></script>
+            {% endfor %}
+        {% endblock %}
+    </body>
 </html>
 ```
 
