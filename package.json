@@ -26,7 +26,7 @@
         "url": "https://github.com/ereminnf/nunjucks-static/issues"
     },
     "scripts": {
-        "clean": "rimraf lib",
+        "clean": "rimraf lib && rimraf tsc",
         "compile": "tsc --project tsconfig.tsc.json",
         "copy": "copyfiles -u 2 tsc/src/**/*.{js,ts} lib",
         "minify": "minimize-js ./lib",

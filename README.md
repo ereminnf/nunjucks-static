@@ -5,7 +5,7 @@
 [size-image]: https://img.shields.io/npm/dm/nunjucks-static.svg
 [size-url]: https://www.npmjs.com/package/nunjucks-static
 
-# Nunjucks loader [![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
+# Nunjucks static [![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
 
 ## Install
 
@@ -18,7 +18,7 @@ npm i --save-dev nunjucks-static
 ### webpack.config.js
 
 ```js
-const { getNunjucksLoaderPlugins } = require('nunjucks-static')
+const { getNunjucksStaticPlugins } = require('nunjucks-static')
 const path = require('path')
 
 const paths = {
