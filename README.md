@@ -210,8 +210,6 @@ root
 {% endblock %}
 ```
 
-````
-
 ```twig
 {% extends "layout.njk" %}
 
