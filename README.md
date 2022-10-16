@@ -9,10 +9,6 @@
 
 [![NPM version][npm-image]][npm-url] [![NPM size][size-image]][size-url]
 
-### The old package v3 [nunjucks-template-loader](https://www.npmjs.com/package/nunjucks-template-loader) is no longer supported and has been renamed to nunjucks-static!
-
----
-
 This package adds nunjucks support for webpack as an HTML templating engine. It also supports the development of a multi-page site with nested pages with static html generation.
 
 Inside nunjucks templates, a "bundle" variable will be available, which will contain the entry files of the build.
